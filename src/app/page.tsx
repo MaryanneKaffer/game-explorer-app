@@ -1,4 +1,4 @@
-import ContentExplorer from "../../components/contentExplorer";
+import ContentExplorer from "../../components/contentHeader/contentExplorer";
 
 export default function Home() {
   return (
