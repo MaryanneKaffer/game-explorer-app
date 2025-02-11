@@ -1,7 +1,7 @@
-import ContentExplorer from "../../components/contentHeader/contentExplorer";
+import Explorer from "../../components/contentHeader/explorer";
 
 export default function Home() {
   return (
-    <ContentExplorer />
+    <Explorer />
   );
 }

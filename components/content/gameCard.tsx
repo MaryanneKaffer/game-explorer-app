@@ -1,8 +1,15 @@
 import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
 import { Image } from "@heroui/image";
 
-interface GameCardProps {
-  games: any[];
+interface Game {
+  id: number;
+  name: string;
+  released: string;
+  rating: number;
+  background_image: string;
+  genres: { name: string }[];
+  trailer_url?: string;
+  metacritic: string;
 }
 
 function Score({ rating }: { rating: number }) {
@@ -15,11 +22,11 @@ function Score({ rating }: { rating: number }) {
   }
 }
 
-export default function GameCard({ games }: { games: any[] }) {
+export default function GameCard({ games }: { games: Game[] }) {
   return (
     <div className="grid grid-cols-4 gap-5 mt-5">
-      {games.map((game, index) => (
-        <div key={`${game.id}-${index}`}> 
+      {games.map((game) => (
+        <div key={game.id}>
           <Card className="max-w-[400px]">
             <CardHeader className="flex gap-3">
               <Image
@@ -32,6 +39,9 @@ export default function GameCard({ games }: { games: any[] }) {
               <h3 className="text-xl font-bold">{game.name}</h3>
               <p className="text-sm mt-2">Released: {game.released}</p>
               <p className="text-sm mt-2">Rating: <Score rating={game.rating} /></p>
+              {game.metacritic && (
+                <p className="text-sm mt-2">Metacritic: {game.metacritic}</p>
+              )}
             </CardBody>
             <CardFooter>
               <p className="text-sm">
