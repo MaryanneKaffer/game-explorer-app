@@ -1,5 +1,6 @@
 import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
 import { Image } from "@heroui/image";
+import { useState } from "react";
 
 interface Game {
   id: number;
@@ -26,31 +27,51 @@ export default function GameCard({ games }: { games: Game[] }) {
   return (
     <div className="grid grid-cols-4 gap-5 mt-5">
       {games.map((game) => (
-        <div key={game.id}>
-          <Card className="max-w-[400px]">
-            <CardHeader className="flex gap-3">
-              <Image
-                src={game.background_image}
-                alt={game.name}
-                className="w-full h-56 object-cover"
-              />
-            </CardHeader>
-            <CardBody>
-              <h3 className="text-xl font-bold">{game.name}</h3>
-              <p className="text-sm mt-2">Released: {game.released}</p>
-              <p className="text-sm mt-2">Rating: <Score rating={game.rating} /></p>
-              {game.metacritic && (
-                <p className="text-sm mt-2">Metacritic: {game.metacritic}</p>
-              )}
-            </CardBody>
-            <CardFooter>
-              <p className="text-sm">
-                Genres: {game.genres.map((genre: any) => genre.name).join(", ")}
-              </p>
-            </CardFooter>
-          </Card>
-        </div>
+        <GameCardItem key={game.id} game={game} />
       ))}
     </div>
+  );
+}
+
+function GameCardItem({ game }: { game: Game }) {
+  const [showTrailer, setShowTrailer] = useState(false);
+
+  return (
+    <Card
+      onMouseEnter={() => setShowTrailer(true)}
+      onMouseLeave={() => setShowTrailer(false)}
+      className="max-w-[400px] transform transition-transform duration-300 hover:scale-105"
+    >
+      <CardHeader className="flex gap-3">
+        {showTrailer && game.trailer_url ? (
+          <video
+            src={game.trailer_url}
+            className="w-full h-56 object-cover cursor-pointer"
+            autoPlay
+            muted
+            loop
+          />
+        ) : (
+          <Image
+            src={game.background_image}
+            alt={game.name}
+            className="w-full h-56 object-cover cursor-pointer"
+          />
+        )}
+      </CardHeader>
+      <CardBody>
+        <h3 className="text-xl font-bold">{game.name}</h3>
+        <p className="text-sm mt-2">Released: {game.released}</p>
+        <p className="text-sm mt-2">Rating: <Score rating={game.rating} /></p>
+        {game.metacritic && (
+          <p className="text-sm mt-2">Metacritic: {game.metacritic}</p>
+        )}
+      </CardBody>
+      <CardFooter>
+        <p className="text-sm">
+          Genres: {game.genres.map((genre: any) => genre.name).join(", ")}
+        </p>
+      </CardFooter>
+    </Card>
   );
 }

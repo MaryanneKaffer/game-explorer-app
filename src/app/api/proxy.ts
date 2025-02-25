@@ -19,7 +19,26 @@ export default async function fetchAllGames() {
       });
 
       const data = response.data;
-      allGames = [...allGames, ...data.results];
+      const gamePromises = data.results.map(async (game: any) => {
+        try {
+          const movieResponse = await axios.get(`https://api.rawg.io/api/games/${game.id}/movies`, {
+            params: { key: apiKey },
+          });
+          
+          const trailers = movieResponse.data.results;
+          const trailerUrl = trailers.length > 0 ? trailers[0].data.max : null;
+
+          return { ...game, trailer_url: trailerUrl };
+        } catch (error) {
+          console.warn(`Failed to fetch trailer for game ID: ${game.id}`);
+          return { ...game, trailer_url: null };
+        }
+      });
+      console.log("API Key:", process.env.NEXT_PUBLIC_RAWG_API_KEY);
+
+      const gamesWithTrailers = await Promise.all(gamePromises);
+
+      allGames = [...allGames, ...gamesWithTrailers];
       hasMore = data.next !== null;
       page++;
     } catch (error) {

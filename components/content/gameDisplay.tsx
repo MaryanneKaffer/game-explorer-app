@@ -15,9 +15,11 @@ export default function GameDisplay({ sortFunction }: GameDisplayProps) {
     const [visibleGames, setVisibleGames] = React.useState<any[]>([]);
     const [loading, setLoading] = React.useState(false);
     const [page, setPage] = React.useState(1);
+
     const pageSize = 12
 
     React.useEffect(() => {
+
         async function loadAllGames() {
             setLoading(true);
             try {
