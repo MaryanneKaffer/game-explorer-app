@@ -30,9 +30,10 @@ export default function GameDisplay({
     async function loadGames() {
       setLoading(true);
       try {
-        const response = await fetchGames(page, sort, searchQuery);
-        setGames(response.games);
-        setTotalCount(response.totalCount);
+        const res = await fetch(`/api?page=1&sort=&search=`);
+        const data = await res.json();
+        setGames(data.games);
+        setTotalCount(data.totalCount);
       } catch (error) {
         console.error(error);
       } finally {
