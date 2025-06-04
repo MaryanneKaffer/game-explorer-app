@@ -1,84 +1,69 @@
-'use client'
+"use client";
 
-import { Button } from "@heroui/react";
+import { Button, Pagination } from "@heroui/react";
 import GameCard from "./gameCard";
-import React from "react";
-import fetchAllGames from "@/src/app/api/proxy";
+import React, { useEffect } from "react";
+import fetchGames from "@/src/app/api/proxy";
 
-interface GameDisplayProps {
-    sortFunction: (a: any, b: any) => number;
-}
+export default function GameDisplay({
+  filter,
+  searchQuery,
+}: {
+  filter: { label: string; value: string };
+  searchQuery: string;
+}) {
+  const [games, setGames] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(false);
+  const [page, setPage] = React.useState(1);
+  const [totalCount, setTotalCount] = React.useState(0);
+  const [sort, setSort] = React.useState(filter.value);
 
+  useEffect(() => {
+    setSort(filter.value);
+    setPage(1);
+  }, [filter, searchQuery]);
 
-export default function GameDisplay({ sortFunction }: GameDisplayProps) {
-    const [allGames, setAllGames] = React.useState<any[]>([]);
-    const [visibleGames, setVisibleGames] = React.useState<any[]>([]);
-    const [loading, setLoading] = React.useState(false);
-    const [page, setPage] = React.useState(1);
+  const pageSize = 20;
+  const maxPages = 500;
 
-    const pageSize = 12
+  React.useEffect(() => {
+    async function loadGames() {
+      setLoading(true);
+      try {
+        const response = await fetchGames(page, sort, searchQuery);
+        setGames(response.games);
+        setTotalCount(response.totalCount);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadGames();
+  }, [page, sort, searchQuery]);
 
-    React.useEffect(() => {
+  const totalPages = Math.min(Math.ceil(totalCount / pageSize), maxPages);
 
-        async function loadAllGames() {
-            setLoading(true);
-            try {
-                const games = await fetchAllGames();
-                const sortedGames = games.sort(sortFunction);
-                setAllGames(sortedGames);
-                setVisibleGames(sortedGames.slice(0, pageSize));
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        loadAllGames();
-    }, []);
-
-    React.useEffect(() => {
-        function handleScroll() {
-            if (
-                window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 &&
-                !loading
-            ) {
-                loadMoreGames();
-            }
-        }
-
-        function loadMoreGames() {
-            setLoading(true);
-            setPage((prevPage) => {
-                const nextPage = prevPage + 1;
-                const startIndex = prevPage * pageSize;
-                const endIndex = nextPage * pageSize;
-
-                const newGames = allGames.slice(startIndex, endIndex);
-                setVisibleGames((prevVisibleGames) => {
-                    const uniqueGames = newGames.filter(
-                        (game) => !prevVisibleGames.some((g) => g.id === game.id)
-                    );
-                    return [...prevVisibleGames, ...uniqueGames];
-                });
-
-                setLoading(false);
-                return nextPage;
-            });
-        }
-
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, [allGames, loading]);
-
-    return (
-        <section className="mx-5">
-            <GameCard games={visibleGames} />
-            {loading && (
-                <p className="text-center mx-10 bg-transparent">
-                    <Button isLoading variant="flat">Loading</Button>
-                </p>
-            )}
-        </section>
-
-    );
+  return (
+    <section className="flex flex-col gap-6">
+      {loading ? (
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <Button size="lg" isLoading className="bg-transparent" />
+        </div>
+      ) : (
+        <>
+          <GameCard games={games} />
+          <div className="flex justify-center">
+            <Pagination
+              className="my-auto"
+              showControls
+              page={page}
+              total={totalPages}
+              onChange={(newPage) => setPage(newPage)}
+            />
+          </div>
+        </>
+      )}
+    </section>
+  );
 }
