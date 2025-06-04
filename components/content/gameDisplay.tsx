@@ -3,7 +3,6 @@
 import { Button, Pagination } from "@heroui/react";
 import GameCard from "./gameCard";
 import React, { useEffect } from "react";
-import fetchGames from "@/src/app/api/proxy";
 
 export default function GameDisplay({
   filter,
@@ -30,16 +29,18 @@ export default function GameDisplay({
     async function loadGames() {
       setLoading(true);
       try {
-        const response = await fetchGames(page, sort, searchQuery);
-        setGames(response.games);
-        setTotalCount(response.totalCount);
+        const response = await fetch(
+          `/api/games?page=${page}&sort=${sort}&search=${searchQuery}`
+        );
+        const data = await response.json();
+        setGames(data.games);
+        setTotalCount(data.totalCount);
       } catch (error) {
         console.error(error);
       } finally {
         setLoading(false);
       }
-    }
-    loadGames();
+    }    loadGames();
   }, [page, sort, searchQuery]);
 
   const totalPages = Math.min(Math.ceil(totalCount / pageSize), maxPages);
