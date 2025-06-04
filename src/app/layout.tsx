@@ -1,13 +1,22 @@
+import "@/styles/globals.css";
+import { Providers } from "./providers";
+import { fontSans } from "@/config/fonts";
+
 export default function RootLayout({
-    children,
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-    return (
-        <html lang="en">
-            <body className="py-[60px] xl:px-[100px] sm:px-[60px] px-[30px]">
-                <main>{children}</main>
-            </body>
-        </html>
-    );
+  return (
+    <html suppressHydrationWarning lang="en">
+      <head />
+      <body
+        className={`min-h-screen bg-background font-sans antialiased ${fontSans.variable}`}
+      >
+        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+          {children}
+        </Providers>
+      </body>
+    </html>
+  );
 }

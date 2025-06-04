@@ -24,7 +24,7 @@ export default function Explorer() {
   };
 
   return (
-    <section className="relative">
+    <section className="relative xl:px-[100px] sm:px-[60px] px:[30px] py-[60px]">
       <h1 className="text-6xl font-bold mb-3 text-blue-600 drop-shadow-[0_4px_8px_rgba(37,99,235,0.3)]">
         {" "}
         Game Explorer{" "}
