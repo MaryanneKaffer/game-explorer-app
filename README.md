@@ -1,53 +1,70 @@
-# Next.js & HeroUI Template
+---
 
-This is a template for creating applications using Next.js 14 (app directory) and HeroUI (v2).
+# 🎮 GameExplorer
 
-[Try it on CodeSandbox](https://githubbox.com/heroui-inc/heroui/next-app-template)
+**GameExplorer** is a simple web app built with **Next.js** that allows users to explore video games using data from the [RAWG.io](https://rawg.io/apidocs) external API.
+This project was created as a learning exercise to practice API integration and dynamic content rendering with Next.js.
 
-## Technologies Used
+## ✨ Features
 
-- [Next.js 14](https://nextjs.org/docs/getting-started)
-- [HeroUI v2](https://heroui.com/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Tailwind Variants](https://tailwind-variants.org)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Framer Motion](https://www.framer.com/motion/)
-- [next-themes](https://github.com/pacocoursey/next-themes)
+* Browse popular and trending video games.
+* Search for games by title.
+* View information about each game, including:
+  * Cover image
+  * Genres
+  * Platforms
+  * Ratings
+  * Release date
+* Responsive UI built with Tailwind CSS (optional depending on your setup).
 
-## How to Use
+## 🔧 Technologies Used
 
-### Use the template with create-next-app
+* [Next.js](https://nextjs.org/) – React framework for server-side rendering and routing
+* [RAWG.io API](https://rawg.io/apidocs) – Free video game database API
+* [Axios](https://axios-http.com/) – HTTP client for making API requests
+* [Tailwind CSS](https://tailwindcss.com/) – Utility-first CSS framework (optional)
 
-To create a new project based on this template using `create-next-app`, run the following command:
+## 🚀 Getting Started
+
+### 1. Clone the repository
 
 ```bash
-npx create-next-app -e https://github.com/heroui-inc/next-app-template
+git clone https://github.com/MaryanneKaffer/game-explorer-app
+cd game-explorer-app
 ```
 
-### Install dependencies
-
-You can use one of them `npm`, `yarn`, `pnpm`, `bun`, Example using `npm`:
+### 2. Install dependencies
 
 ```bash
 npm install
+# or
+yarn
 ```
 
-### Run the development server
+### 3. Set up environment variables
+
+Create a `.env.local` file in the root of the project and add your RAWG API key:
+
+```bash
+NEXT_PUBLIC_RAWG_API_KEY=your_rawg_api_key_here
+```
+
+> You can get a free API key from [https://rawg.io/apidocs](https://rawg.io/apidocs).
+
+### 4. Run the development server
 
 ```bash
 npm run dev
+# or
+yarn dev
 ```
 
-### Setup pnpm (optional)
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the app.
 
-If you are using `pnpm`, you need to add the following code to your `.npmrc` file:
+## 🎯 Learning Objectives
 
-```bash
-public-hoist-pattern[]=*@heroui/*
-```
+* Practice working with external APIs in a Next.js app
+* Learn how to manage API keys securely with environment variables
+* Explore responsive UI design with Tailwind CSS
 
-After modifying the `.npmrc` file, you need to run `pnpm install` again to ensure that the dependencies are installed correctly.
-
-## License
-
-Licensed under the [MIT license](https://github.com/heroui-inc/next-app-template/blob/main/LICENSE).
+---
