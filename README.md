@@ -1,5 +1,3 @@
----
-
 # 🎮 GameExplorer
 
 **GameExplorer** is a simple web app built with **Next.js** that allows users to explore video games using data from the [RAWG.io](https://rawg.io/apidocs) external API.
@@ -66,5 +64,3 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the a
 * Practice working with external APIs in a Next.js app
 * Learn how to manage API keys securely with environment variables
 * Explore responsive UI design with Tailwind CSS
-
----
