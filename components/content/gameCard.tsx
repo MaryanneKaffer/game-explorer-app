@@ -61,7 +61,7 @@ function GameCardItem({ game }: { game: Game }) {
         )}
       </CardHeader>
       <CardBody>
-        <h3 className="text-xl font-bold">{game.name}</h3>
+        <h1 className="text-xl font-bold">{game.name}</h1>
         <p className="text-sm mt-2">Released: {game.released}</p>
         <p className={`text-sm mt-2 ${ratingColor}`}>
           <span className="text-white">Rating:</span> {game.rating}
