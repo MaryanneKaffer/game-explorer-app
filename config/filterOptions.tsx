@@ -1,4 +1,4 @@
-export const filterOptions = [
+export const tags = [
   {
     label: "Popular",
     value: "",
@@ -32,3 +32,4 @@ export const filterOptions = [
     value: "metacritic",
   },
 ];
+

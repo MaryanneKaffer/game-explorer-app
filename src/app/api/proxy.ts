@@ -4,6 +4,7 @@ export default async function fetchGames(
   page = 1,
   sort = "",
   searchQuery = "",
+  genre = ""
 ) {
   const apiKey = process.env.NEXT_PUBLIC_RAWG_API_KEY;
   const pageSize = 20;
@@ -15,6 +16,7 @@ export default async function fetchGames(
         page: page,
         page_size: pageSize,
         ...(searchQuery ? { search: searchQuery } : { ordering: sort }),
+        ...(genre ? { genres: genre } : {}),
       },
     });
 

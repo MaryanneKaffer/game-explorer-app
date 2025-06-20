@@ -11,8 +11,8 @@ interface Game {
   genres: { name: string }[];
   trailer_url?: string;
   metacritic: string;
+  platforms: { image: string }[];
 }
-
 export default function GameCard({ games }: { games: Game[] }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-5">
@@ -62,21 +62,24 @@ function GameCardItem({ game }: { game: Game }) {
       </CardHeader>
       <CardBody>
         <h1 className="text-xl font-bold">{game.name}</h1>
-        <p className="text-sm mt-2">Released: {game.released}</p>
-        <p className={`text-sm mt-2 ${ratingColor}`}>
-          <span className="text-white">Rating:</span> {game.rating}
-        </p>
-        {game.metacritic && (
-          <p className={`text-sm mt-2 ${metacriticColor}`}>
-            <span className="text-white">Metacritic:</span> {game.metacritic}
+        <span className="flex flex-col gap-2">
+          <p className="text-sm">Released: {game.released}</p>
+          <p className={`text-sm ${ratingColor}`}>
+            <span className="text-white">Rating:</span> {game.rating}
           </p>
-        )}
+          {game.metacritic && (
+            <p className={`text-sm ${metacriticColor}`}>
+              <span className="text-white">Metacritic:</span> {game.metacritic}
+            </p>
+          )}
+          <p className="text-sm">
+            Platforms: {game.platforms.map((platform) => {<Image src="platform.image" width={20} height={20}/>}).join(", ")}
+          </p>
+          <p className="text-sm">
+            Genres: {game.genres.map((genre) => genre.name).join(", ")}
+          </p>
+        </span>
       </CardBody>
-      <CardFooter>
-        <p className="text-sm">
-          Genres: {game.genres.map((genre) => genre.name).join(", ")}
-        </p>
-      </CardFooter>
     </Card>
   );
 }

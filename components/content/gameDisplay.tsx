@@ -7,10 +7,13 @@ import React, { useEffect } from "react";
 export default function GameDisplay({
   filter,
   searchQuery,
+  genre,
 }: {
   filter: { label: string; value: string };
   searchQuery: string;
+  genre: string;
 }) {
+  const [genreSort, setGenreSort] = React.useState("");
   const [games, setGames] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [page, setPage] = React.useState(1);
@@ -20,7 +23,7 @@ export default function GameDisplay({
   useEffect(() => {
     setSort(filter.value);
     setPage(1);
-  }, [filter, searchQuery]);
+  }, [filter, searchQuery, genre]);
 
   const pageSize = 20;
   const maxPages = 500;
@@ -30,18 +33,18 @@ export default function GameDisplay({
       setLoading(true);
       try {
         const response = await fetch(
-          `/api/games?page=${page}&sort=${sort}&search=${searchQuery}`
+          `/api/games?page=${page}&sort=${sort}&search=${searchQuery}&genres=${genre}`
         );
         const data = await response.json();
         setGames(data.games);
         setTotalCount(data.totalCount);
       } catch (error) {
-        console.error(error);
+        alert(error);
       } finally {
         setLoading(false);
       }
-    }    loadGames();
-  }, [page, sort, searchQuery]);
+    } loadGames();
+  }, [page, sort, searchQuery, genre]);
 
   const totalPages = Math.min(Math.ceil(totalCount / pageSize), maxPages);
 

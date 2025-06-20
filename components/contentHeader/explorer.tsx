@@ -4,25 +4,43 @@ import { Button, Input } from "@heroui/react";
 import { Listbox, ListboxItem } from "@heroui/react";
 import React from "react";
 import GameDisplay from "../content/gameDisplay";
-import { filterOptions } from "@/config/filterOptions";
 import { SearchIcon } from "@/assets/serachIcon";
 import { motion } from "framer-motion";
 import { FaCheck } from "react-icons/fa";
+import { tags } from "@/config/filterOptions";
+import { useGenres } from "@/config/useGenres";
 
 export default function Explorer() {
+  const isClient = typeof window !== "undefined";
+  const genres = isClient ? useGenres() : [];
+
+  const genreOptions = genres.map((genre) => ({
+    label: genre.name,
+    value: genre.slug,
+  }));
+
   const [isOpenListbox, setIsOpenListbox] = React.useState(false);
-  const [selectedOrder, setSelectedOrder] = React.useState(filterOptions[0]);
+  const [selectedOrder, setSelectedOrder] = React.useState(tags[0]);
+  const [selectedGenre, setSelectedGenre] = React.useState("");
   const [searchQuery, setSearchQuery] = React.useState("");
 
   const handleButtonPress = () => {
     setIsOpenListbox((prevState) => !prevState);
   };
 
-  const handleSelection = (order: { label: string; value: string }) => {
+  const handleSelection = (order: { label: string; value: string }, type: string) => {
     order.label === "Search Query" && setSearchQuery(order.value);
-    setSelectedOrder(order);
+    if (type === 'Genres') {
+      setSelectedGenre(order.value)
+      console.log(order.value)
+    } else {
+      setSelectedOrder(order)
+    }
+
     setIsOpenListbox(false);
   };
+
+  const filterOptions = [{ name: 'Tags', value: tags }, { name: 'Genres', value: genreOptions }];
 
   return (
     <section className="relative xl:px-[100px] sm:px-[60px] px-[50px] py-[60px]">
@@ -30,24 +48,26 @@ export default function Explorer() {
         Game Explorer
       </h1>
       <h2 className="text-sxl mb-5"> Based on rawg.io API </h2>
-      <div className="sm:flex sm:flex-row flex-col">
-        <div className="flex flex-col">
-          <p className="hidden sm:flex xl:text-3xl text-xl text-blue-600 xl:w-[340px] w-[200px]"> Filter by:</p>
-
-          <div className="sm:flex flex-col gap-1 hidden xl:w-[300px] w-[180px] rounded-xl bg-[#18181B] xl:p-3 p-1 mt-8 h-fit">
-            {filterOptions.map((option) => (
-              <button
-                key={option.value}
-                onClick={() => { handleSelection(option) }}
-                className={`w-full sm:w-auto xl:text-xl text-md items-center text-left hover:brightness-50 px-5 py-2 bg-[#18181B] transition-all duration-300 rounded-md flex ${option.value === selectedOrder.value && "brightness-125"}`}
-              >
-                {option.label}
-                {option.value === selectedOrder.value && (
-                  <FaCheck className="ml-auto" size={18} />
-                )}
-              </button>
-            ))}
-          </div>
+      <div className="sm:flex sm:flex-row flex-col gap-5">
+        <div className="flex flex-col gap-5">
+          {filterOptions.map((option) => (
+            <div key={option.name} className="sm:flex flex-col hidden xl:w-[300px] w-[180px] rounded-xl bg-[#18181B] xl:p-3 p-1 h-fit">
+              <h1 className="m-2 xl:text-xl text-md">{option.name}</h1>
+              {option.value.map((item) => (
+                <button
+                  key={item.value}
+                  onClick={() => { handleSelection(item, option.name); }}
+                  className={`w-full sm:w-auto xl:text-lg text-sm items-center text-left hover:brightness-50 px-5 py-2 bg-[#18181B] transition-all duration-300 rounded-md flex 
+                    ${(item.value === selectedOrder.value || item.value === selectedGenre) && "brightness-125"}`}
+                >
+                  {item.label}
+                  {(item.value === selectedOrder.value || item.value === selectedGenre) && (
+                    <FaCheck className="ml-auto" size={18} />
+                  )}
+                </button>
+              ))}
+            </div>
+          ))}
 
           <Button
             size="lg"
@@ -62,8 +82,8 @@ export default function Explorer() {
 
         <div>
           <Input
-            onChange={(e) => handleSelection({ label: "Search Query", value: e.target.value })}
-            onClear={() => handleSelection(filterOptions[0])}
+            onChange={(e) => handleSelection({ label: "Search Query", value: e.target.value }, "Search Query")}
+            onClear={() => handleSelection({ label: "Search Query", value: "" }, "Search Query")}
             size="lg"
             classNames={{
               inputWrapper: [
@@ -86,7 +106,7 @@ export default function Explorer() {
               transition={{ duration: 0.1, ease: "easeInOut" }}
               className={`absolute -mt-16 z-50 py-3 bg-black rounded-md w-full origin-top max-w-[77dvw] bg-[#0E0E10]`}
             >
-              <Listbox aria-label="Actions" selectedKeys={selectedOrder.value}>
+              {/*<Listbox aria-label="Actions" selectedKeys={selectedOrder.value}>
                 {filterOptions.map((option) => (
                   <ListboxItem
                     className="mt-1 !text-inherit !bg-transparent hover:animate-rainbow-glow hover:rounded-md"
@@ -96,11 +116,11 @@ export default function Explorer() {
                     {option.label}
                   </ListboxItem>
                 ))}
-              </Listbox>
+              </Listbox>*/}
             </motion.div>
           )}
 
-          <GameDisplay filter={selectedOrder} searchQuery={searchQuery} />
+          <GameDisplay filter={selectedOrder} searchQuery={searchQuery} genre={selectedGenre} />
         </div>
       </div>
     </section>
