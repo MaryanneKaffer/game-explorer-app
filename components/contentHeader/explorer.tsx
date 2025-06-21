@@ -70,7 +70,7 @@ export default function Explorer() {
           ))}
 
           <Button
-            size={window.innerWidth > 1024 ? "lg" : "md"}
+            size="lg"
             onPress={handleButtonPress}
             className="relative px-6 py-2 text-white radius-lg animate-rainbow-glow bg-opacity-25 flex mb-5 sm:hidden"
           >

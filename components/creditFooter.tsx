@@ -1,20 +1,4 @@
-import { useEffect, useState } from "react";
-
 export default function CreditFooter() {
-    const [isDark, setIsDark] = useState(false);
-
-    useEffect(() => {
-        const checkTheme = () =>
-            setIsDark(document.documentElement.classList.contains("dark"));
-
-        checkTheme();
-        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", checkTheme);
-
-        return () => {
-            window.matchMedia("(prefers-color-scheme: dark)").removeEventListener("change", checkTheme);
-        };
-    }, []);
-
     return (
         <div className="min-h-[50px] w-fit mx-auto relative flex place-items-center justify-center gap-2 hover:brightness-90">
             <h1 className="text-center text-md">Powered by <a href="https://github.com/MaryanneKaffer" rel="noreferrer" target="_blank" className="text-purple-500">Maryanne Käffer</a></h1>

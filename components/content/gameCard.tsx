@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
+import { Card, CardHeader, CardBody } from "@heroui/card";
 import { Image } from "@heroui/image";
 import { useState } from "react";
 
@@ -43,12 +43,13 @@ function GameCardItem({ game }: { game: Game }) {
       : Number(game.metacritic) >= 40
         ? "text-yellow-500"
         : "text-red-500";
+
   return (
     <div className="relative lgxl:h-[365px] md:h-[300px] lgxl:w-[330px] xl:w-[230px] md:w-[220px] w-full h-[360px]">
       <Card
+        className="w-full z-0 p-3 hover:z-10 transform transition-transform duration-300 hover:scale-105 group h-full hover:h-fit absolute"
         onMouseEnter={() => setShowTrailer(true)}
         onMouseLeave={() => setShowTrailer(false)}
-        className="w-full z-0 p-3 hover:z-10 transform transition-transform duration-300 hover:scale-105 group h-full hover:h-fit absolute"
       >
         <CardHeader className="flex justify-center">
           {showTrailer && game.trailer_url ? (
@@ -61,8 +62,8 @@ function GameCardItem({ game }: { game: Game }) {
             />
           ) : (
             <Image
-              src={game.background_image}
               alt={game.name}
+              src={game.background_image}
               className="w-full lgxl:max-h-40 md:max-h-24 max-h-44 object-cover rounded-md"
             />
           )}

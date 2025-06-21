@@ -1,8 +1,8 @@
 "use client";
 
 import { Button, Pagination } from "@heroui/react";
-import GameCard from "./gameCard";
 import React, { useEffect } from "react";
+import GameCard from "./gameCard";
 
 export default function GameDisplay({
   filter,
@@ -15,7 +15,6 @@ export default function GameDisplay({
   genre: string;
   platform: string;
 }) {
-  const [genreSort, setGenreSort] = React.useState("");
   const [games, setGames] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [page, setPage] = React.useState(1);
