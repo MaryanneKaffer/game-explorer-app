@@ -15,7 +15,6 @@ export async function GET() {
 
     return NextResponse.json(genres);
   } catch (error) {
-    console.error("Erro ao buscar gêneros:", error);
     return NextResponse.json({ error: "Failed to fetch genres" }, { status: 500 });
   }
 }

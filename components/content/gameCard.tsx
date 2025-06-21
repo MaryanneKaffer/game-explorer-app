@@ -11,9 +11,15 @@ interface Game {
   genres: { name: string }[];
   trailer_url?: string;
   metacritic: string;
-  platforms: { image: string }[];
+  platforms: {
+    platform: {
+      name: string;
+      slug: string;
+    };
+  }[];
 }
 export default function GameCard({ games }: { games: Game[] }) {
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-5">
       {games.map((game) => (
@@ -38,48 +44,52 @@ function GameCardItem({ game }: { game: Game }) {
         ? "text-yellow-500"
         : "text-red-500";
   return (
-    <Card
-      onMouseEnter={() => setShowTrailer(true)}
-      onMouseLeave={() => setShowTrailer(false)}
-      className="max-w-[400px] p-3 transform transition-transform duration-300 hover:scale-105"
-    >
-      <CardHeader className="flex justify-center">
-        {showTrailer && game.trailer_url ? (
-          <video
-            src={game.trailer_url}
-            className="w-full h-56 object-cover rounded-md"
-            autoPlay
-            muted
-            loop
-          />
-        ) : (
-          <Image
-            src={game.background_image}
-            alt={game.name}
-            className="lg:w-full lg:h-56 object-cover rounded-md"
-          />
-        )}
-      </CardHeader>
-      <CardBody>
-        <h1 className="text-xl font-bold">{game.name}</h1>
-        <span className="flex flex-col gap-2">
-          <p className="text-sm">Released: {game.released}</p>
-          <p className={`text-sm ${ratingColor}`}>
-            <span className="text-white">Rating:</span> {game.rating}
-          </p>
-          {game.metacritic && (
-            <p className={`text-sm ${metacriticColor}`}>
-              <span className="text-white">Metacritic:</span> {game.metacritic}
-            </p>
+    <div className="relative lgxl:h-[365px] md:h-[300px] lgxl:w-[330px] xl:w-[230px] md:w-[220px] w-full h-[360px]">
+      <Card
+        onMouseEnter={() => setShowTrailer(true)}
+        onMouseLeave={() => setShowTrailer(false)}
+        className="w-full z-0 p-3 hover:z-10 transform transition-transform duration-300 hover:scale-105 group h-full hover:h-fit absolute"
+      >
+        <CardHeader className="flex justify-center">
+          {showTrailer && game.trailer_url ? (
+            <video
+              src={game.trailer_url}
+              className="w-full h-56 object-cover rounded-md"
+              autoPlay
+              muted
+              loop
+            />
+          ) : (
+            <Image
+              src={game.background_image}
+              alt={game.name}
+              className="w-full lgxl:max-h-40 md:max-h-24 max-h-44 object-cover rounded-md"
+            />
           )}
-          <p className="text-sm">
-            Platforms: {game.platforms.map((platform) => {<Image src="platform.image" width={20} height={20}/>}).join(", ")}
-          </p>
-          <p className="text-sm">
-            Genres: {game.genres.map((genre) => genre.name).join(", ")}
-          </p>
-        </span>
-      </CardBody>
-    </Card>
+        </CardHeader>
+        <CardBody className="overflow-hidden">
+          <h1 className="lgxl:text-xl lg:text-lg font-bold">{game.name}</h1>
+          <span className="flex flex-col gap-2">
+            <p className={`text-sm mt-2 ${ratingColor}`}>
+              <span className="text-white">Rating:</span> {game.rating}
+            </p>
+            {game.metacritic && (
+              <p className={`text-sm ${metacriticColor}`}>
+                <span className="text-white">Metacritic:</span> {game.metacritic}
+              </p>
+            )}
+            <p className="text-sm">
+              Genres: {game.genres.map((genre) => genre.name).join(", ")}
+            </p>
+            <span className="trnasition-all duration-300 opacity-0 group-hover:opacity-100 flex flex-col gap-2">
+              <p className="text-sm">Released: {game.released}</p>
+              <p className="text-sm">
+                Platforms: {game.platforms.map((p) => p.platform.name).join(", ")}
+              </p>
+            </span>
+          </span>
+        </CardBody>
+      </Card>
+    </div>
   );
 }

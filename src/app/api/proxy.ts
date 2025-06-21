@@ -4,10 +4,11 @@ export default async function fetchGames(
   page = 1,
   sort = "",
   searchQuery = "",
-  genre = ""
+  genre = "",
+  platform = ""
 ) {
   const apiKey = process.env.NEXT_PUBLIC_RAWG_API_KEY;
-  const pageSize = 20;
+  const pageSize = 36;
 
   try {
     const response = await axios.get("https://api.rawg.io/api/games", {
@@ -17,6 +18,7 @@ export default async function fetchGames(
         page_size: pageSize,
         ...(searchQuery ? { search: searchQuery } : { ordering: sort }),
         ...(genre ? { genres: genre } : {}),
+        ...(platform ? { platforms: platform } : {}),
       },
     });
 

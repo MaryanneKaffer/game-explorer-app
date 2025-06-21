@@ -1,9 +1,5 @@
 export const tags = [
   {
-    label: "Popular",
-    value: "",
-  },
-  {
     label: "Name",
     value: "name",
   },

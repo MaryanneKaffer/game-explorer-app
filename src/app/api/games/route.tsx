@@ -7,12 +7,12 @@ export async function GET(request: NextRequest) {
     const sort = searchParams.get('sort') || '';
     const searchQuery = searchParams.get('search') || '';
     const genres = searchParams.get('genres') ?? '';
+    const platform = searchParams.get('platform') ?? '';
 
     try {
-        const data = await fetchGames(page, sort, searchQuery, genres);
+        const data = await fetchGames(page, sort, searchQuery, genres, platform);
         return NextResponse.json(data);
     } catch (error) {
-        console.error(error);
         return NextResponse.json(
             { error: 'Failed to fetch games' },
             { status: 500 }
