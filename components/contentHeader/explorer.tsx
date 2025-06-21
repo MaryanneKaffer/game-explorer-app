@@ -12,9 +12,8 @@ import { useGenres } from "@/config/useGenres";
 import { usePlatforms } from "@/config/usePlatforms";
 
 export default function Explorer() {
-  const isClient = typeof window !== "undefined";
-  const genres = isClient ? useGenres() : [];
-  const platforms = isClient ? usePlatforms() : [];
+  const genres = useGenres();
+  const platforms = usePlatforms();
 
   const genreOptions = genres.map((genre) => ({ label: genre.name, value: genre.id }));
   const platformOptions = platforms.map((platform) => ({ label: platform.name, value: platform.id }));
